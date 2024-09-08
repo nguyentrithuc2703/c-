@@ -2,7 +2,7 @@
 
 using namespace std;
 
-class SinhVien {
+class SinhVien{
 public:
     string hoTen;
     string ngaySinh;
@@ -13,7 +13,7 @@ public:
     float tinhDiemTrungBinh() const{
         return (diemToan + diemLy + diemHoa) / 3.0;
     }
-
+    
     //Nhap thong tin sinh vien bang cach nap chong toan tu 
     friend istream& operator>>(istream& in, SinhVien& sv){
         cout << "Nhap ho ten: "; getline(in, sv.hoTen);
@@ -23,10 +23,9 @@ public:
         cout << "Nhap diem Toan: "; in >> sv.diemToan;
         cout << "Nhap diem Ly: "; in >> sv.diemLy;
         cout << "Nhap diem Hoa: "; in >> sv.diemHoa;
-        in.ignore(); //loai bo ki tu xuong don sau khi nhap diem
+        in.ignore(); 
         return in;
     }
-
     //in thong tin sinh vien bang cach nap chong toan tu
     friend ostream& operator<<(ostream& out, const SinhVien& sv){
         out << "Ho ten: " << sv.hoTen << "\n";
@@ -46,23 +45,43 @@ int main(){
     cout << "Nhap so luong sinh vien: ";
     cin >> n;
     cin.ignore(); 
-    vector<SinhVien> danhSachSinhVien(n);
-    //Nhap danh sach sinh vein
+    
+    SinhVien** danhSachSinhVien = new SinhVien*[n];
+
+    
     for(int i = 0; i < n; ++i){
+        danhSachSinhVien[i] = new SinhVien();
         cout << "Nhap thong tin sinh vien thu " << i + 1 << ":\n";
-        cin >> danhSachSinhVien[i];
+        cin >> *danhSachSinhVien[i];
+        cout << "\n";
+    }
+    
+    cout << "************************************************************** \n";
+    
+    cout << "Danh sach sau khi nhap la : \n";
+    for (int i = 0; i < n; ++i) {
+        cout << *danhSachSinhVien[i] << endl;
     }
 
-    //sap xep diem theo thu tu giam dan
-    sort(danhSachSinhVien.begin(), danhSachSinhVien.end(), [](const SinhVien& a, const SinhVien& b){
-        return a.tinhDiemTrungBinh() > b.tinhDiemTrungBinh();
-    });
-
-   //in danh sach sau khi sap xep
+    for (int i = 0; i < n - 1; ++i){
+        for (int j = i + 1; j < n; ++j) {
+            if (danhSachSinhVien[i]->tinhDiemTrungBinh() < danhSachSinhVien[j]->tinhDiemTrungBinh()){
+                swap(danhSachSinhVien[i], danhSachSinhVien[j]);
+            }
+        }
+    }
+    
+    cout << "************************************************************** \n";
     cout << "\nDanh sach sinh vien sau khi sap xep theo diem trung binh giam dan:\n";
-    for(const SinhVien& sv : danhSachSinhVien){
-        cout << sv << endl;
+    
+    for (int i = 0; i < n; ++i) {
+        cout << *danhSachSinhVien[i] << endl;
     }
+
+    for(int i = 0; i < n; ++i){
+        delete danhSachSinhVien[i];
+    }
+    delete[] danhSachSinhVien;
+
     return 0;
 }
-

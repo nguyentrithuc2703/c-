@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <iostream>
-#include <string>
-#include <string.h>
-#include <vector>
-#include <algorithm>
-#include <fstream>
-#include <sstream>
-
+#include<bits/stdc++.h>
 using namespace std;
 
 class Book {
